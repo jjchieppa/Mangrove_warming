@@ -1,0 +1,80 @@
+Using calculations from Slot and Kitajima 2015 on homeostasis and acclimation.
+
+**DATE:
+To test seasonal acclimation by date:
+
+--Sort by: "Date", then "UserIDs_in", then "R_calc"
+
+--'Set' variables are using R@25 °C
+--'Hom' variables are using R @ in situ °C, derived from the R-T response curve, calculated R at the 5 day mean temperature
+
+VARIABLES:
+
+Days_Date (calculates number of days between sampling events for Date-based calculations)
+=IF(D2<>D1,"NA",A2-A1)
+
+Set_date (calculates Acclim_SetTemp over time, 1st date = Control, 2nd date = Warm)
+=IF(D2<>D1,"NA",I1/I2)
+
+Set_date_Tdiff (calculates difference in mean 5 day air temperature over time, difference can be negative)
+=IF(D2<>D1,"NA",C2-C1)
+
+Set_date.warm (calculates Acclim_SetTemp over time, cooler date = Control, warmer date = Warm)
+=IF(D2<>D1,"NA",IF(C2>C1,I1/I2,I2/I1))
+
+Set_date.warm_Tdiff (calculates difference in 5 day air temperature over time, where all values should be >=0)
+=IF(D2<>D1,"NA",IF(C2>C1,C2-C1,C1-C2))
+
+Hom_date (calculates Acclim_Homeo over time, 1st date = Control, 2nd date = Warm)
+=IF(D2<>D1,"NA",AH1/AH2)
+
+Hom_date_Tdiff (calculates difference in mean 5 day air temperature over time, difference can be negative) (should match Set_date_Tdiff values)
+=IF(D2<>D1,"NA",C2-C1)
+
+Hom_date.warm (calculates Acclim Homeo over time, cooler date = Control, warmer date = Warm)
+=IF(D2<>D1,"NA",IF(C2>C1,AH1/AH2,AH2/AH1))
+
+Hom_date.warm_Tdiff (calculates difference in 5 day air temperature over time, where all values should be >=0)
+=IF(D2<>D1,"NA",IF(C2>C1,C2-C1,C1-C2))
+
+\~~*~~/\~~*~~/\~~*~~/\~~*~~/\~~*~~/\~~*~~/\~~*~~/\~~*~~/\~~*~~/\~~*~~/
+
+**TEMPERATURE:
+To test acclimation by increasing temperatures:
+
+--Sort by: "Temp_C.mean", then "UserIDs_in", then "R_calc"
+
+--'Set' variables are using R@25 °C
+--'Hom' variables are using R @ in situ °C, derived from the R-T response curve, calculated R at the 5 day mean temperature
+
+VARIABLES:
+
+Days_T5 (calculates the absolute number of days between sampling events for T5 based calculations)
+=IF(D2<>D1,"NA",ABS(A2-A1))
+
+Days_T5.sd (calculates the number of days since the original, standard sampling was taken)
+=IF(D2<>D1,"NA",A2-AR2)
+
+Set_T5 (calculates Acclim_SetTemp over time, cooler date = Control, warmer date = Warm)
+=IF(D2<>D1,"NA",I1/I2)
+
+Set_T5_Tdiff (calculates difference in 5 day air temperature over time, where all values should be >=0)
+=IF(D2<>D1,"NA",C2-C1)
+
+Set_T5.sd (calculates Acclim_SetTemp over time, coldest date (standard = sd) for that specific plant = Control, warmer date = Warm)
+=IF(D2<>D1,"NA",I2/AZ2)
+
+Set_T5.sd_Tdiff (calculates difference in 5 day air temperature over time where the start T5 is the lowest recorded, where all values should be >=0)
+=IF(D2<>D1,"NA",C2-AS2)
+
+Hom_T5 (calculates Acclim_Homeo over time, cooler date = Control, warmer date = Warm)
+=IF(D2<>D1,"NA",AH1/AH2)
+
+Hom_T5_Tdiff (calculates difference in 5 day air temperature over time, where all values should be >=0)
+=IF(D2<>D1,"NA",C2-C1)
+
+Hom_T5.sd (calculates Acclim_Homeo over time, coldest date (standard = sd) for that specific plant = Control, warmer date = Warm)
+=IF(D2<>D1,"NA",AH2/BA2)
+
+Hom_T5.sd_Tdiff (calculates difference in 5 day air temperature over time where the start T5 is the lowest recorded, where all values should be >=0)
+=IF(D2<>D1,"NA",C2-AS2)
